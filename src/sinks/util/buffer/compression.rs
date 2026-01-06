@@ -515,8 +515,13 @@ impl Configurable for CompressionLevel {
 
 impl ToValue for CompressionLevel {
     fn to_value(&self) -> Value {
-        // FIXME
-        serde_json::to_value(self).expect("Could not convert compression level to JSON")
+        match *self {
+            CompressionLevel::None => Value::String("none".to_string()),
+            CompressionLevel::Default => Value::String("default".to_string()),
+            CompressionLevel::Best => Value::String("best".to_string()),
+            CompressionLevel::Fast => Value::String("fast".to_string()),
+            CompressionLevel::Val(level) => Value::from(level),
+        }
     }
 }
 
